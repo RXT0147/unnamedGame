@@ -31,7 +31,6 @@ impl Player {
 		self.screen_size = viewport.size();
 		// DNR(Krey): Figure out better way to handle these
 		godot_print!("Screen size has been set to '{:?}'", viewport.size());
-		owner.hide();
 	}
 
 	#[export]
@@ -39,19 +38,30 @@ impl Player {
 		let input = Input::godot_singleton();
 		let mut velocity = Vector2::new(0.0, 0.0);
 
+		#[cfg(feature = "debug-movement")]
+		godot_print!("Player is at '{:?}'", owner.global_position());
+
 		if Input::is_action_pressed(&input, "ui_right") {
 			#[cfg(feature = "debug-movement")]
 			godot_print!("Registered 'ui_right'");
 
-			velocity.x += 1.0
+			velocity.x += 100.0
 		} else if Input::is_action_pressed(&input, "ui_left") {
 			#[cfg(feature = "debug-movement")]
 			godot_print!("Registered 'ui_left'");
 
-			velocity.x -= 1.0
+			velocity.x -= 100.0
 		} else {
 			#[cfg(feature = "debug-movement")]
-			godot_print!("Not moving");
+			godot_print!("No input registered");
 		}
+
+		let change = velocity * delta;
+		let position = (owner.global_position() + change).clamp(Vector2::new(0.0, 0.0), self.screen_size);
+		
+
+		#[cfg(feature = "debug-movement")]
+		godot_print!("Moving player to {:?}", position);
+		owner.set_global_position(position);
 	}
 }
