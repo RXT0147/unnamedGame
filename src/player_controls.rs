@@ -1,5 +1,4 @@
-///! This library implement handling to control the player
-///! This is done by processing the user input and changing the position of a player
+///! This library implement handling to control the player it does that by processing the user input and changing the position of a Area2D object to which the player is assigned
 
 // DNM-QA(Krey): assume rust-analyzer misinterpretation of unresolved import, needs to be solved prior to merge
 use gdnative::api::Area2D;
@@ -11,10 +10,9 @@ use gdnative::prelude::*;
 #[derive(NativeClass)]
 #[inherit(Area2D)]
 pub struct Player {
-	#[property(default = 400)]
-	speed: i32,
+	#[property(default = 400.0)]
+	speed: f32,
 
-	// FIXME-DOCS(Krey): Why are we using Vector2 here?
 	screen_size: Vector2,
 }
 
@@ -23,7 +21,7 @@ impl Player {
 	// FIXME-DOCS(Krey): Unfortunately, this won't compile just yet: Rust will complain about the lack of a 'new' method and a 'NativeClassMethods' trait. This is because all scripts must also have a zero-argument constructor and a set of exported methods.
 	fn new(_owner: &Area2D) -> Self {
 		Player {
-			speed: 400,
+			speed: 400.0,
 			screen_size: Vector2::new(0.0, 0.0),
 		}
 	}
@@ -46,36 +44,23 @@ impl Player {
 		// FIXME-QA(Krey): This runs multiple times a second, can't we move that outside of _process as it needs to be processed only once?
 		let mut velocity = Vector2::new(0.0, 0.0);
 
-		#[cfg(feature = "debug-movement")]
-		godot_print!("Player is at '{:?}'", owner.global_position());
-
 		// FIXME-QA(Krey): This is implementing a long if conditional.. can't we use match that is in theory prettier and more efficient?
 		// FIXME-QA(Krey): Implement 'ui_right' as variable so that they can be later implemented in UI for the user to change the keybinds
 		if Input::is_action_pressed(&input, "ui_right") {
-			// FIXME-QA(Krey): This should be a standalone function in lib such as debug.rs
-			#[cfg(feature = "debug-movement")]
-			godot_print!("Registered 'ui_right'");
+			// DNM-QA(Krey): Expected to expand in 'Player::speed'
+			velocity.x += 400.0
 
-			// FIXME-QA(Krey): Define this into a variable
-			velocity.x += 100.0
 		// FIXME-QA(Krey): Implement 'ui_left' as variable so that they can be later implemented in UI for the user to change the keybinds
 		} else if Input::is_action_pressed(&input, "ui_left") {
-			#[cfg(feature = "debug-movement")]
-			godot_print!("Registered 'ui_left'");
-
 			// FIXME-QA(Krey): Define this into a variable
-			velocity.x -= 100.0
-		} else {
-			#[cfg(feature = "debug-movement")]
-			godot_print!("No input registered");
+			velocity.x -= 400.0
+
 		}
 
 		let change = velocity * delta;
+		// DNR-QA(Krey): Player can overflow on the right side
 		let position = (owner.global_position() + change).clamp(Vector2::new(0.0, 0.0), self.screen_size);
 		
-
-		#[cfg(feature = "debug-movement")]
-		godot_print!("Moving player to {:?}", position);
 		owner.set_global_position(position);
 	}
 }
