@@ -6,8 +6,18 @@ authors = ["FIXME-DOCS(Krey): authors"]
 publish = false
 edition = "2018"
 
+[features]
+# The default set of optional packages. Most people will want to use these
+# packages, but they are strictly optional. Note that `session` is not a package
+# but rather another feature listed in this manifest.
+default = []
+
+# Adds a debugging output for key-presses
+debug-movement = []
+
 [lib]
 crate-type = ["cdylib"]
 
 [dependencies]
 gdnative = "0.9.1"
+rand = "0.7.3"

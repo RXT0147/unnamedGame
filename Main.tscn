@@ -1,13 +1,7 @@
-[gd_scene format=2]
+[gd_scene load_steps=2 format=2]
 
-[node name="Main" type="Node2D"]
+[ext_resource path="res://Player.tscn" type="PackedScene" id=1]
 
-[node name="Player (placeholder)" type="ColorRect" parent="."]
-margin_left = 472.882
-margin_top = 208.99
-margin_right = 576.882
-margin_bottom = 305.99
-color = Color( 1, 0, 0, 1 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
+[node name="Node2D" type="Node2D"]
+
+[node name="Player" parent="." instance=ExtResource( 1 )]
