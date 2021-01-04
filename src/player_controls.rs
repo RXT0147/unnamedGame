@@ -2,7 +2,7 @@
 
 // DNM-QA(Krey): assume rust-analyzer misinterpretation of unresolved import, needs to be solved prior to merge
 use gdnative::api::Area2D;
-// FIXME-QA(Krey): Cherry-pick the used imports instead of using asterisk
+// FIXME-QA(Krey): Cherry-pick the used imports instead of using asterisk?
 use gdnative::prelude::*;
 
 /// The player structure
@@ -11,8 +11,7 @@ use gdnative::prelude::*;
 #[inherit(Area2D)]
 pub struct Player {
 	#[property(default = 400.0)]
-	speed: f32,
-
+	movement_speed: f32,
 	screen_size: Vector2,
 }
 
@@ -21,7 +20,7 @@ impl Player {
 	// FIXME-DOCS(Krey): Unfortunately, this won't compile just yet: Rust will complain about the lack of a 'new' method and a 'NativeClassMethods' trait. This is because all scripts must also have a zero-argument constructor and a set of exported methods.
 	fn new(_owner: &Area2D) -> Self {
 		Player {
-			speed: 400.0,
+			movement_speed: 400.0,
 			screen_size: Vector2::new(0.0, 0.0),
 		}
 	}
@@ -47,13 +46,11 @@ impl Player {
 		// FIXME-QA(Krey): This is implementing a long if conditional.. can't we use match that is in theory prettier and more efficient?
 		// FIXME-QA(Krey): Implement 'ui_right' as variable so that they can be later implemented in UI for the user to change the keybinds
 		if Input::is_action_pressed(&input, "ui_right") {
-			// DNM-QA(Krey): Expected to expand in 'Player::speed'
-			velocity.x += 400.0
+			velocity.x += self.movement_speed;
 
 		// FIXME-QA(Krey): Implement 'ui_left' as variable so that they can be later implemented in UI for the user to change the keybinds
 		} else if Input::is_action_pressed(&input, "ui_left") {
-			// FIXME-QA(Krey): Define this into a variable
-			velocity.x -= 400.0
+			velocity.x -= self.movement_speed;
 
 		}
 
