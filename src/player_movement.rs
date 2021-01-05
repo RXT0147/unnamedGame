@@ -1,8 +1,8 @@
 ///! This library implement handling to control the player it does that by processing the user input and changing the position of a Area2D object to which the player is assigned
 
-// FIXME-RESEARCH(Krey): Allegedly 
+// FIXME-RESEARCH(Krey): Allegedly the modern GPUs are using floats because that's how GPUs operate.. Benchmark to see if that is more efficient and compatible
 
-// DNM-QA(Krey): assume rust-analyzer misinterpretation of unresolved import, needs to be solved prior to merge
+// FIXME-QA(Krey): assume rust-analyzer misinterpretation of unresolved import, needs to be solved prior to merge
 use gdnative::api::Area2D;
 // FIXME-QA(Krey): Cherry-pick the used imports instead of using asterisk?
 use gdnative::prelude::*;
@@ -26,27 +26,22 @@ impl Player {
 		}
 	}
 
+	// DNR-NOTE(Krey): This may cause issues with serialization as it may not be processing it correctly when multiple inputs are pressed at the same time it may be to the game advantage to be more responsive and as such it should be decided prior to release (https://github.com/godot-rust/godot-rust/pull/660#issuecomment-754409177) 
 	/// The '_ready' functions runs only once after the game finished it's initialization
 	#[export]
 	fn _ready(&mut self, owner: &Area2D) {
-		// DNR-QA(Krey): Rust doesn't allow us to get the screen_size outside of unsafe function right?
-		let viewport = unsafe { owner.get_viewport().unwrap().assume_safe() };
+		let viewport = owner.get_viewport_rect();
 
-		// DNM-QA(Krey): This doesn't work when the screen is resized which is unexpected
 		// Set the screen resolution
-		self.screen_resolution = viewport.size();
-
-		// DNR(Krey): Figure out better way to handle these
-		godot_print!("Screen resolution has been set to '{:?}'", viewport.size());
+		self.screen_resolution = viewport.size.to_vector();
 	}
 
 	/// Function that runs in a loop when the game is running
 	#[export]
 	fn _process(&mut self, owner: &Area2D, delta: f32) {
-		// WTF(Krey)
 		let input = Input::godot_singleton();
 		
-		// It's important to set the velocity back to 0 after the key-press has been processed as without it the player will unwantedly continue in it's movement
+		// This is defining the initial velocity that also stops the player after the key-press
 		let mut velocity = Vector2::new(0.0, 0.0);
 
 		// FIXME-QA(Krey): This is implementing a long if conditional.. can't we use match that is in theory prettier and more efficient?

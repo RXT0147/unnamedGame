@@ -21,3 +21,4 @@ crate-type = ["cdylib"]
 [dependencies]
 gdnative = "0.9.1"
 rand = "0.7.3"
+#euclid = "0.22.1"
