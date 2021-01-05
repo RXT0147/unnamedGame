@@ -1,0 +1,24 @@
+{
+    "recommendations": [
+        "matklad.rust-analyzer",
+        "tamasfe.even-better-toml",
+        "timonwong.shellcheck",
+        "serayuzgur.crates",
+        "belfz.search-crates-io",
+        "swellaby.vscode-rust-test-adapter",
+        "bbenoist.vagrant",
+        "ms-azuretools.vscode-docker",
+        "exiasr.hadolint",
+        "hbenl.vscode-test-explorer",
+        "eamodio.gitlens",
+        "markwylde.vscode-filesize",
+        "streetsidesoftware.code-spell-checker",
+        "coenraads.bracket-pair-colorizer-2",
+        "oderwat.indent-rainbow",
+        "gruntfuggly.todo-tree",
+        "medo64.render-crlf",
+        "vscodevim.vim",
+        "stephen-riley.regexworkbench",
+        "genuitecllc.codetogether"
+    ]
+}

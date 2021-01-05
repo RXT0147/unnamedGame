@@ -4,7 +4,6 @@
 
 [node name="Player" type="Area2D"]
 script = ExtResource( 1 )
-movement_speed = 5000.0
 
 [node name="ColorRect" type="ColorRect" parent="."]
 margin_right = 40.0

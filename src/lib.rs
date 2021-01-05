@@ -1,12 +1,10 @@
 use gdnative::prelude::*;
 
-//mod logger;
-//mod extensions.rs;
-mod player_controls;
+mod player_movement;
 
 fn init(handle: InitHandle) {
 	//handle.add_class::<logger::Logger>();
-	handle.add_class::<player_controls::Player>();
+	handle.add_class::<player_movement::Player>();
 }
 
 godot_init!(init);
