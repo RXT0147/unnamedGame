@@ -77,4 +77,9 @@
   ],
   "restructuredtext.confPath": "",
   "rust-analyzer.cargo.allFeatures": true,
+  "gitlens.currentLine.enabled": false,
+  "gitlens.hovers.currentLine.over": "line",
+  "gitlens.codeLens.enabled": false,
+  "rust-analyzer.cargo.loadOutDirsFromCheck": true,
+  "rust-analyzer.procMacro.enable": true,
 }

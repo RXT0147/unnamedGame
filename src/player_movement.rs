@@ -47,10 +47,12 @@ impl Player {
 		// FIXME-QA(Krey): This is implementing a long if conditional.. can't we use match that is in theory prettier and more efficient?
 		// FIXME-QA(Krey): Implement 'ui_right' as variable so that they can be later implemented in UI for the user to change the keybinds
 		if Input::is_action_pressed(&input, "ui_right") {
+			// DNM(Krey): Has to be investigated as this value does not control movement speed
 			velocity.x += self.movement_speed;
 
 		// FIXME-QA(Krey): Implement 'ui_left' as variable so that they can be later implemented in UI for the user to change the keybinds
 		} else if Input::is_action_pressed(&input, "ui_left") {
+			// DNM(Krey): Has to be investigated as this value does not control movement speed
 			velocity.x -= self.movement_speed;
 
 		}
